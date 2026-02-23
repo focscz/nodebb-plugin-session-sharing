@@ -33,6 +33,13 @@
 						</p>
 					</div>
 					<div class="mb-3">
+						<label class="form-label" for="wrapSecret">Warp JWT Secret</label>
+						<input type="checkbox" id="wrapSecret" name="wrapSecret" title="Wrap JWT Secret" class="form-control" />
+						<p class="form-text">
+							Wrap JWT secret with --- BEGIN PUBLIC KEY --- / --- END PUBLIC KEY --- before passing it into jwt.verify().
+						</p>
+					</div>
+					<div class="mb-3">
 						<label class="form-label" for="hostWhitelist">Host Whitelist</label>
 						<input type="text" id="hostWhitelist" name="hostWhitelist" title="Host Whitelist" class="form-control" placeholder="localhost" />
 						<p class="form-text">
