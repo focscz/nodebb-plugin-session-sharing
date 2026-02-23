@@ -34,7 +34,7 @@
 					</div>
 					<div class="mb-3">
 						<label class="form-label" for="wrapSecret">Warp JWT Secret</label>
-						<input type="checkbox" id="wrapSecret" name="wrapSecret" title="Wrap JWT Secret" class="form-control" />
+						<input type="checkbox" id="wrapSecret" name="wrapSecret" title="Wrap JWT Secret" />
 						<p class="form-text">
 							Wrap JWT secret with --- BEGIN PUBLIC KEY --- / --- END PUBLIC KEY --- before passing it into jwt.verify().
 						</p>
