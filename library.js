@@ -47,6 +47,7 @@ const plugin = {
 		cookieName: 'token',
 		cookieDomain: undefined,
 		secret: '',
+		wrapSecret: 'off',
 		behaviour: 'trust',
 		adminRevalidate: 'off',
 		noRegistration: 'off',
@@ -129,7 +130,19 @@ plugin.getUser = async (remoteId) => {
 };
 
 plugin.process = async (token) => {
-	const payload = await jwt.verify(token, plugin.settings.secret);
+	// If the secret is an RSA public key (obtained e.g. from Keycloak), it must be in form:
+	// -----BEGIN PUBLIC KEY-----
+	// key bytes...
+	// -----END PUBLIC KEY-----
+	// If it is just key bytes, the jwt.verify() fails with error. The line ends are important, nut I find out that
+	// line ends are impossible to be stored in configuration, so I for the plugin and add this wrapping of the bytes
+	// to make it work.
+	let { secret } = plugin.settings;
+	if (plugin.settings.wrapSecret === 'on') 
+	{
+		secret = `-----BEGIN PUBLIC KEY----- \n${secret}\n-----END PUBLIC KEY-----`;
+	}
+	const payload = await jwt.verify(token, secret);
 	const userData = await plugin.normalizePayload(payload);
 	const [uid, isNewUser] = await plugin.findOrCreateUser(userData);
 	await plugin.updateUserProfile(uid, userData, isNewUser);
